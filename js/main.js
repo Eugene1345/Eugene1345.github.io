@@ -9,7 +9,7 @@
 
 if ('caches' in window) {
   // The Cache API is supported
-  const cacheName = 'my-website-cache';
+  const cacheName = 'my-website-cache1';
   const cacheAssets = '/css/main.css';
 
   caches.open(cacheName).then(cache => {
