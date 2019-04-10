@@ -14,16 +14,15 @@ if ('caches' in window) {
 
   caches.open(cacheName).then(cache => {
     // you can start using the cache
-    console.log('yes');
     cache.add(cacheAssets).then(() => {
-      console.log('added');
+      console.log('Added');
     });
 
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cache => {
           if( cache !== cacheName ) {
-            console.log('Service Worker: Clearing Old Cache');
+            console.log('Clearing Old Cache');
             return caches.delete(cache);
           }
         })
