@@ -29,4 +29,11 @@ if ('caches' in window) {
       })
      })
     })
-  }
+
+    caches.open(cacheName).then(cache => {
+      cache.delete(cacheAssets).then(() => {
+        console.log('deleted');
+      }
+    )
+    })
+}
