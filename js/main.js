@@ -19,21 +19,26 @@ if ('caches' in window) {
       console.log('added');
     });
 
-    cache.match(cacheAssets).then( item => {
-      console.log(item);
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => {
+          if( cache !== cacheName ) {
+            console.log('Service Worker: Clearing Old Cache');
+            return caches.delete(cache);
+          }
+        })
+      )
     })
 
      fetch(cacheAssets).then(res => {
-       return caches.open(cacheName).then(cache => {
-         return cache.put(cacheAssets, res)
-      })
-     })
-    })
-
-    caches.open(cacheName).then(cache => {
-      cache.delete(cacheAssets).then(() => {
-        console.log('deleted');
-      }
-    )
+       const resClone = res.clone();
+       caches
+        .open(cacheName)
+        .then(cache => {
+          // Add response to cache
+          cache.put(e.request, resClone);
+        });
+        return res;
+      }).catch(err => caches.match(e.request).then(res => res))
     })
 }
