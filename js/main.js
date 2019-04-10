@@ -1,43 +1,16 @@
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     navigator.serviceWorker
-//       .register('/sw_cached_pages.js')
-//       .then(reg => console.log('Register'))
-//       .catch(err => console.log(err));
-//   });
-// } 
-
 if ('caches' in window) {
-  // The Cache API is supported
-  const cacheName = 'my-website-cache1';
-  const cacheAssets = '/css/main.css';
-
-  caches.open(cacheName).then(cache => {
-    // you can start using the cache
-    cache.add(cacheAssets).then(() => {
-      console.log('Added');
-    });
-
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cache => {
-          if( cache !== cacheName ) {
-            console.log('Clearing Old Cache');
-            return caches.delete(cache);
+  const name = 'my-app1'
+  const assets = '/css/main.css'
+  
+  caches.open(name)
+    .then(cache => {
+      cache.match(assets)
+        .then(res => {
+          if (!res) {
+            cache.add(assets)
+          } else {
+            console.log(res)
           }
-        })
-      )
-    })
-
-     fetch(cacheAssets).then(res => {
-       const resClone = res.clone();
-       caches
-        .open(cacheName)
-        .then(cache => {
-          // Add response to cache
-          cache.put(e.request, resClone);
-        });
-        return res;
-      }).catch(err => caches.match(e.request).then(res => res))
-    })
+      })
+  })
 }
