@@ -1,5 +1,5 @@
 if ('caches' in window) {
-  const name = 'my-app2'
+  const name = 'my-app1'
   const assets = '/css/main.css'
   
   caches.open(name)
